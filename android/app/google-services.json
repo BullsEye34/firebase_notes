@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "41781344850",
+    "firebase_url": "https://notes-f3ceb.firebaseio.com",
+    "project_id": "notes-f3ceb",
+    "storage_bucket": "notes-f3ceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41781344850:android:5cdf79749f238c056e7d8b",
+        "android_client_info": {
+          "package_name": "ga.vamshiprasad.firebase_notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41781344850-o4dtj45asqvrpp6dg1v8oabdfoevtc4t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAae5jjfho0Ad7ZrBk9EhaP2qQJh94_m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41781344850-o4dtj45asqvrpp6dg1v8oabdfoevtc4t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
