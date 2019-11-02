@@ -1,16 +1,21 @@
 # firebase_notes
 
-A new Flutter application.
+A new Flutter application about Firebase with making notes.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Download the project here with:
+<code>git clone https://github.com/BullsEye34/firebase_notes</code>
 
-A few resources to get you started if this is your first Flutter project:
+## Building the App
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Run these commands:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To change directory to app directory
+<code>cd firebase_notes</code>
+
+To get to download missing packages
+<code>flutter pub get</code>
+
+To get to compile app
+<code>flutter build apk</code>
