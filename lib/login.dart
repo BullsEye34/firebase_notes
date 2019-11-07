@@ -1,3 +1,4 @@
+import 'package:firebase_notes/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,6 +10,9 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+
+  TextEditingController uname = new TextEditingController();
+  TextEditingController pwd = new TextEditingController();
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -42,6 +46,7 @@ class _loginState extends State<login> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Form(
+                autovalidate: true,
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -49,6 +54,7 @@ class _loginState extends State<login> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(keyboardType: TextInputType.emailAddress,
+                        controller: uname,
                         validator: validateEmail /*(value) {
                           if (value.isEmpty) {
                             return 'Please enter Your Mail ID';
@@ -64,6 +70,7 @@ class _loginState extends State<login> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        controller: pwd,
                         obscureText: true,
                         validator: (value) {
                           if (value.isEmpty) {
@@ -87,10 +94,8 @@ class _loginState extends State<login> {
                             child: FlatButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
-                                  // If the form is valid, display a Snackbar.
-                                  Scaffold.of(context)
-                                      .showSnackBar(SnackBar(content: Text('Processing Data'), backgroundColor: Colors.white,));
-                                }
+                                    logine();
+                                  }
                               },
                               color: Colors.blue,
                               shape: RoundedRectangleBorder(
@@ -139,5 +144,16 @@ class _loginState extends State<login> {
       context,
       MaterialPageRoute(builder: (context) => n),
     );
+  }
+
+  logine() async{
+    print("************************");
+    print("*******************************************************");
+    /*print(uname.text + " " + pwd.text);*/
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: uname.text, password: pwd.text).then((value){
+      print(value.user.uid);
+      _navigateToNextScreen(context, notes());
+    });
+
   }
 }

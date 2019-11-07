@@ -1,5 +1,7 @@
 import 'package:firebase_notes/login.dart';
+import 'package:firebase_notes/notes.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class signup extends StatefulWidget {
   @override
@@ -7,6 +9,11 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
+
+  TextEditingController uname = new TextEditingController();
+  TextEditingController pwd = new TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -48,6 +55,7 @@ class _signupState extends State<signup> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        controller: uname,
                         validator: validateEmail /*(value) {
                           if (value.isEmpty) {
                             return 'Please enter some text';
@@ -56,13 +64,15 @@ class _signupState extends State<signup> {
                         }*/,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-                          labelText: 'Username',
+                          labelText: 'Username (Mail ID)',
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        obscureText: true,
+                        controller: pwd,
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter some text';
@@ -85,9 +95,7 @@ class _signupState extends State<signup> {
                             child: FlatButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
-                                  // If the form is valid, display a Snackbar.
-                                  Scaffold.of(context)
-                                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                                  signupe();
                                 }
 
                               },
@@ -139,5 +147,17 @@ class _signupState extends State<signup> {
       context,
       MaterialPageRoute(builder: (context) => n),
     );
+  }
+  signupe() async{
+    print("*******************************************************");
+    print(uname.text + " " + pwd.text);
+    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+      email: uname.text,
+      password: pwd.text,
+    ))
+        .user;
+    print(user.uid);
+    _navigateToNextScreen(context, notes());
+
   }
 }
