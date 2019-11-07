@@ -1,3 +1,4 @@
+import 'package:firebase_notes/login.dart';
 import 'package:flutter/material.dart';
 
 class signup extends StatefulWidget {
@@ -6,6 +7,17 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +40,22 @@ class _signupState extends State<signup> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Form(
+                autovalidate: true,
+                key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        validator: validateEmail /*(value) {
+                          if (value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        }*/,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
                           labelText: 'Username',
                         ),
                       ),
@@ -43,8 +63,14 @@ class _signupState extends State<signup> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
                           labelText: 'Password',
                         ),
                       ),
@@ -57,7 +83,14 @@ class _signupState extends State<signup> {
                             width: MediaQuery.of(context).size.width/1.5,
                             height: MediaQuery.of(context).size.height / 20,
                             child: FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  // If the form is valid, display a Snackbar.
+                                  Scaffold.of(context)
+                                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                                }
+
+                              },
                               color: Colors.blue,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -76,7 +109,8 @@ class _signupState extends State<signup> {
 
                             child: OutlineButton(
                               onPressed: () {
-                                _navigateToNextScreen(context, signup());
+                                /*_navigateToNextScreen(context, login());*/
+                                Navigator.pop(context);
                               },
                               borderSide: BorderSide(width: 3, color: Colors.blue),
                               shape: RoundedRectangleBorder(
