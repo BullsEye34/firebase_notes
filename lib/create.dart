@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class create extends StatefulWidget {
   @override
@@ -7,6 +8,23 @@ class create extends StatefulWidget {
 }
 
 class _createState extends State<create> {
+  var user;
+  @override
+  void initState() {
+
+    // TODO: implement initState
+    some();
+    print(user);
+    print("*****************************");
+    super.initState();
+  }
+  some() async{
+    final FirebaseUser userw = await FirebaseAuth.instance.currentUser();
+    final String uide = userw.uid.toString();
+    setState(() {
+      user = uide;
+    });
+  }
   final title = new TextEditingController();
   final body = new TextEditingController();
 
@@ -80,8 +98,8 @@ class _createState extends State<create> {
     print("***************************");
     print(title.text + "\n\n\n" + body.text);
     await Firestore.instance
-        .collection('notes')
-        .document()
+        .collection('users')
+        .document(user).collection('notes').document()
         .setData({'title': title.text, 'body': body.text});
     Navigator.pop(context);
   }

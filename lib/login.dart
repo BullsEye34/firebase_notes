@@ -1,7 +1,7 @@
 import 'package:firebase_notes/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter/services.dart';
 import 'signup.dart';
 
 class login extends StatefulWidget {
@@ -26,113 +26,34 @@ class _loginState extends State<login> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Login"),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
-      backgroundColor: Color(0xff121212),
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width / 1.1,
-          height: MediaQuery.of(context).size.height / 2.5,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(29),
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+        statusBarColor: Colors.purple[700],
+      systemNavigationBarColor: Colors.blue[800]
+    ));
+    return SafeArea(
+      child: Scaffold(
+        /*appBar: AppBar(
+          title: Text("Fire Notes"),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),*/
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/2.png"),
+                fit: BoxFit.fill,
               ),
             ),
+            width: MediaQuery.of(context).size.width / 1,
+            height: MediaQuery.of(context).size.height / 1,
             child: Padding(
               padding: const EdgeInsets.all(18.0),
-              child: Form(
-                autovalidate: true,
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(keyboardType: TextInputType.emailAddress,
-                        controller: uname,
-                        validator: validateEmail /*(value) {
-                          if (value.isEmpty) {
-                            return 'Please enter Your Mail ID';
-                          }
-                          return null;
-                        }*/,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-                          labelText: 'Username (Mail ID)',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: pwd,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-                          labelText: 'Password',
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width/1.5,
-                            height: MediaQuery.of(context).size.height / 20,
-                            child: FlatButton(
-                              onPressed: () {
-                                if (_formKey.currentState.validate()) {
-                                    logine();
-                                  }
-                              },
-                              color: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(19.0),
-                                ),
-                              ),
-                              child: Text("Login"),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width/1.5,
-                            height: MediaQuery.of(context).size.height / 20,
-
-                            child: OutlineButton(
-                              onPressed: () {
-                                _navigateToNextScreen(context, signup());
-                              },
-                              borderSide: BorderSide(width: 3, color: Colors.blue),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(19.0),
-                                ),
-                              ),
-                              child: Text("Sign Up"),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    )
-                  ],
-                ),
-              ),
+              child: Center(child: forma()),
             ),
           ),
         ),
@@ -140,7 +61,7 @@ class _loginState extends State<login> {
     );
   }
   void _navigateToNextScreen(BuildContext context, Widget n) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => n),
     );
@@ -155,5 +76,134 @@ class _loginState extends State<login> {
       _navigateToNextScreen(context, notes());
     });
 
+  }
+  Widget forma(){
+    return Form(
+      autovalidate: false,
+      key: _formKey,
+      child: Wrap(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                color: Color(0x41ffffff),
+                child: Theme(
+                  data: new ThemeData(
+                    primaryColor: Colors.white,
+                    primaryColorDark: Colors.white,
+                    hintColor: Color(0xafffffff)
+                  ),
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.white, height: 2.0 ),
+
+                    keyboardType: TextInputType.emailAddress,
+                    controller: uname,
+                    validator: validateEmail /*(value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter Your Mail ID';
+                                }
+                                return null;
+                              }*/,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.mail_outline, color: Color(0xafffffff),),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
+                      labelText: 'USERNAME (MAIL ID)',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                color: Color(0x41ffffff),
+                child: Theme(
+                  data: new ThemeData(
+                    primaryColor: Colors.white,
+                    primaryColorDark: Colors.white,
+                    hintColor: Color(0xafffffff)
+                  ),
+                  child: TextFormField(
+                    style: TextStyle(height: 2.0, color: Colors.white),
+                    controller: pwd,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock_outline, color: Color(0xafffffff),),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
+                      labelText: 'PASSWORD',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/1,
+                    height: MediaQuery.of(context).size.height / 14,
+                    child: FlatButton(
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          logine();
+                        }
+                      },
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50.0),
+                        ),
+                      ),
+                      child: Text("LOGIN" , style: TextStyle(fontSize: 20, color: Colors.purple),),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Text(
+                    "OR"
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/1,
+                    height: MediaQuery.of(context).size.height / 20,
+
+                    child: OutlineButton(
+                      onPressed: () {
+                        _navigateToNextScreen(context, signup());
+                      },
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50.0),
+                        ),
+                      ),
+                      child: Text("SIGN UP", style: TextStyle(fontSize: 20),),
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

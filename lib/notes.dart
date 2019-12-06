@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,6 +10,23 @@ class notes extends StatefulWidget {
 }
 
 class _notesState extends State<notes> {
+  var user;
+  @override
+  void initState() {
+
+    // TODO: implement initState
+    some();
+   print(user);
+   print("*****************************");
+    super.initState();
+  }
+  some() async{
+    final FirebaseUser userw = await FirebaseAuth.instance.currentUser();
+    final String uide = userw.uid.toString();
+    setState(() {
+      user = uide;
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -31,13 +49,21 @@ class _notesState extends State<notes> {
         ),
       ),
       appBar: AppBar(
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              FirebaseAuth.instance.signOut();
+            },
+            child: Icon(Icons.exit_to_app, color: Colors.white,),
+          )
+        ],
         title: Text("Notes App"),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
       
       body: StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('notes').snapshots(),
+        stream: Firestore.instance.collection('users').document(user).collection('notes').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError)
             return new Text('Error: ${snapshot.error}');
